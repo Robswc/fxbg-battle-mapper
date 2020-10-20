@@ -6,3 +6,4 @@ project that maps various battles onto a map, detailed with information.
 Robert Carroll  
 Jacob Carryer  
 Kyle White
+Mikayla Stitts

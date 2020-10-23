@@ -1,5 +1,5 @@
 import json
-from app.components.battle import Battle
+from battle import Battle
 
 
 # Function that loads sample json
@@ -33,7 +33,7 @@ class BattleFactory:
         b = Battle()
         b.name = json_data.get('name')
         b.date_range = json_data.get('dateRange')
-        b.loc = json_data.get('loc')
+        b.location = json_data.get('loc')
         b.coord = json_data.get('coord')
         b.belligerents = json_data.get('belligerents')
         b.leaders = json_data.get('leaders')
@@ -53,4 +53,4 @@ class BattleFactory:
 
 # Testing that BattleFactory correctly creates a battle class.
 bf = BattleFactory()
-bf.create_battle(load_sample_json())
+print(bf.create_battle(load_sample_json()).print_battle())

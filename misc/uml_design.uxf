@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>13</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>195</x>
+      <y>169</y>
+      <w>273</w>
+      <h>234</h>
+    </coordinates>
+    <panel_attributes>: Scrapper
+--
+- 
+--
+- get_battle_json() : list(json())
+- create_battle_json() : json()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>533</x>
+      <y>169</y>
+      <w>182</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>: Battle
+--
+- name : String
+- date_range : list()
+- belligerents : list()
+- coord : list()
+- loc : String
+- casualties : Int
+- strength : Int
+- leaders : list()
+--
+- update() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>533</x>
+      <y>494</y>
+      <w>286</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>: BattleFactory
+--
+- battle_list : list(Battle())
+- json_data : json()
+--
+- create_battle : Battle()
+- add_battle(battle Battle()) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>728</x>
+      <y>169</y>
+      <w>286</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>: Map
+--
+
+--
+- render(battle_list) : html.Div()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>195</x>
+      <y>494</y>
+      <w>273</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>: BattleMapper
+--
+
+--
+- run() : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

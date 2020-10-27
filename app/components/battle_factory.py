@@ -1,10 +1,10 @@
 import json
-from battle import Battle
+from components.battle import Battle
 
 
 # Function that loads sample json
 def load_sample_json():
-    with open('sample_battle.json') as j:
+    with open('components/sample_battle.json') as j:
         return json.load(j)
 
 

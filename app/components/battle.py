@@ -1,3 +1,5 @@
+import dash_html_components as html
+
 class Battle:
     def __init__(self):
         self.name = ""
@@ -29,3 +31,33 @@ class Battle:
         cas = self.casualties)
 
         print(txt)
+
+    def render(self):
+        """
+        to be filled in
+        :return: html.Div()
+        """
+
+        # Create list for information, based on class attributes.
+        info_list = [self.date_range,
+                     self.location,
+                     self.coord,
+                     self.belligerents,
+                     self.leaders,
+                     self.strength,
+                     self.casualties]
+
+        info_list_html = []
+        for item in info_list:
+            info_list_html.append(html.Li(item))
+
+
+        grid = html.Div(
+            children=[
+                html.H1(self.name),
+                html.Ul(children=info_list_html)
+            ]
+        )
+
+
+        return grid

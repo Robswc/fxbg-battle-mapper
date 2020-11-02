@@ -22,11 +22,11 @@ def load_sample_json():
 
 bf = BattleFactory()
 bf.add_battle(bf.create_battle(load_sample_json()))
-
+    # Creates header, description, and renders map html.
 app.layout = html.Div(children=[
     # Creates header html.
     html.H1(children='Welcome to FXBG-BATTLE-MAPPER'),
-
+    
     html.Div(children='''
         Plots historical battles on a map.
     '''),

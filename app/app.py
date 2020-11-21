@@ -15,14 +15,16 @@ from components.battle_factory import BattleFactory
 
 app = dash.Dash(__name__)
 
+
 # Function that loads sample json
 def load_sample_json():
     with open('components/sample_battle.json') as j:
         return json.load(j)
 
+
 bf = BattleFactory()
 bf.add_battle(bf.create_battle(load_sample_json()))
-
+# Creates header, description, and renders map html.
 app.layout = html.Div(children=[
     # Creates header html.
     html.H1(children='Welcome to FXBG-BATTLE-MAPPER'),

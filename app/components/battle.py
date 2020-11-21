@@ -54,9 +54,10 @@ class Battle:
 
         grid = html.Div(
             children=[
+
                 html.H1(self.name, className='battle-header'),
                 html.Ul(children=info_list_html)
             ], className='battle-container')
 
-
         return grid
+

@@ -1,7 +1,9 @@
 .battle-header {
-
+    color: red;
+    padding: 1em;
 }
 
 .battle-container {
-
+    border: 5px solid red;
+    font-family: "Arial";
 }

@@ -33,8 +33,21 @@ app.layout = html.Div(children=[
         Plots historical battles on a map.
     '''),
 
-    html.Div(bf.battle_list[0].render())
+    html.Div(bf.battle_list[0].render()),
 
+    html.Footer(children=[
+        html.Div(children=[
+            html.A(children='GitHub', href='https://github.com/robswc/fxbg-battle-mapper')
+        ], className='footer-element'),
+
+        html.Div(children=[
+            html.A(children='About', href='')
+        ], className='footer-element'),
+
+        html.Div(children=[
+            html.A(children='Contact', href='')
+        ], className='footer-element')
+    ], className='footer')
 ])
 
 if __name__ == '__main__':

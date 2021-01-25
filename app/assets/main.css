@@ -7,3 +7,18 @@
     border: 5px solid red;
     font-family: "Arial";
 }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: lightgray;
+}
+
+.footer-element {
+    text-align: center;
+    line-height: 60px; /* Must be same as footer height to center vertically */
+    float: left; /* Used to align in a row */
+    width: 33%;
+}

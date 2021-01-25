@@ -49,8 +49,3 @@ class BattleFactory:
         """
         print('{} added to battle list.'.format(battle.name))
         self.battle_list.append(battle)
-
-
-# Testing that BattleFactory correctly creates a battle class.
-bf = BattleFactory()
-print(bf.create_battle(load_sample_json()).print_battle())

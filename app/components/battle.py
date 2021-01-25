@@ -60,4 +60,3 @@ class Battle:
             ], className='battle-container')
 
         return grid
-

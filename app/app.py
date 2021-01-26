@@ -13,7 +13,7 @@ import json
 from components.battle import Battle
 from components.battle_factory import BattleFactory
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=['https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'])
 
 
 # Function that loads sample json
@@ -33,8 +33,19 @@ app.layout = html.Div(children=[
         Plots historical battles on a map.
     '''),
 
-    html.Div(bf.battle_list[0].render()),
+    #Bootstrap grid
+    html.Div(children=[
+        html.Div(children=[
+            #html.Div(bf.battle_list[0].render())
+        ], className='col-8'),
+        html.Div(children=[
+            html.Div(bf.battle_list[0].render())
+        ], className='col')
+    ], className='row'),
 
+    #html.Div(bf.battle_list[0].render()),
+
+    # Footer
     html.Footer(children=[
         html.Div(children=[
             html.A(children='GitHub', href='https://github.com/robswc/fxbg-battle-mapper')

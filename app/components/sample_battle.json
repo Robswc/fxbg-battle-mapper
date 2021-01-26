@@ -1,0 +1,28 @@
+{
+  "name": "Battle of Fredericksburg",
+  "dateRange": [
+    "12-11-1862",
+    "12-15-1862"
+  ],
+  "loc": "Spotsylvania County and Fredericksburg, Virginia",
+  "coord": [
+    38.299,
+    77.4705
+  ],
+  "belligerents": [
+    "United States (Union)",
+    "Confederate States"
+  ],
+  "leaders": [
+    "Ambrose Burnside",
+    "Robert E. Lee"
+  ],
+  "strength": [
+    122009,
+    78513
+  ],
+  "casualties": [
+    12653,
+    5377
+  ]
+}

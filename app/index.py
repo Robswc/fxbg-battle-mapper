@@ -31,10 +31,18 @@ bf = BattleFactory()
 bf.add_battle(bf.create_battle(load_sample_json()))
 # Creates header, description, and renders map html.
 
-mapbox_figure = go.Figure(go.Scattermapbox())
-mapbox_figure.update_layout(mapbox_style='open-street-map')
+# These lists chould probably start empty and have locations added from the web scraper but
+# Richmond is here as a placeholder
+latList = [37.5407]
+longList = [-77.4360]
+textList = ['Richmond']
+
+mapbox_figure = go.Figure(go.Scattermapbox(lat=latList, lon=longList, text=textList,
+    marker=go.scattermapbox.Marker(size=9)))
+mapbox_figure.update_layout(mapbox_style='carto-darkmatter')
 mapbox_figure.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 mapbox_figure.update_layout(height=720)
+mapbox_figure.update_layout(mapbox=dict(center=dict(lat=37.4316, lon=-78.6569), zoom=6))
 
 app.layout = html.Div(children=[
     dcc.Loading(

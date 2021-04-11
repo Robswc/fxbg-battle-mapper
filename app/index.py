@@ -10,6 +10,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import json
+import requests
+from bs4 import BeautifulSoup
 
 # Import Controls
 from components import controls
@@ -19,6 +21,7 @@ from app import app
 
 from components.battle import Battle
 from components.battle_factory import BattleFactory
+from components.scraper import Scraper
 
 
 # Function that loads sample json

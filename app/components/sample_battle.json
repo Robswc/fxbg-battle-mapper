@@ -4,7 +4,10 @@
     "12-11-1862",
     "12-15-1862"
   ],
-  "loc": "Spotsylvania County and Fredericksburg, Virginia",
+  "locs": [
+    "Spotsylvania County",
+    "Fredericksburg, Virginia"
+  ],
   "coord": [
     38.299,
     77.4705

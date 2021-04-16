@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from battle import Battle
 
 class Scraper:
     def __init__(self):
@@ -24,8 +25,47 @@ class Scraper:
             full_url = url_p1 + url_p2
 
             self.battle_urls.append(full_url)
+    
+    def get_battles(self):
+        # get html from wiki page
+        url = "https://en.wikipedia.org/wiki/Battle_of_Fredericksburg"
+        r = requests.get(url)
+        html_doc = r.text
+
+        soup = BeautifulSoup(html_doc, "html.parser")
+
+        # seperate info table
+        main_table = soup.find("table", class_="infobox vevent")
+
+        # create battle object
+        b = Battle()
+
+        # name
+        first_header = main_table.find("th") # find first table header, contains battle name
+        b.name = first_header.string
+
+        # get table and rows containing date/locations/result
+        sub_table = main_table.find("table")
+        sub_table_rows = sub_table.find_all("tr")
+
+        # date - first row of sub table
+        date = sub_table_rows[0].find("td").string
+        b.date_range = date
+
+        # locations - second row of sub table
+        data = sub_table_rows[1].find("td")
+        loc_div = data.find("div", class_="location")
+        locs = loc_div.find_all("a")
+        for loc in locs:
+            b.locations.append(loc.string)
+
+
+        # print()
+        b.print_battle()
+
+
+
 
 # test code
 scraper = Scraper()
-scraper.get_battle_urls()
-print(scraper.battle_urls)
+scraper.get_battles()

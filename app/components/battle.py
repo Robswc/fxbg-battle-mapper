@@ -4,7 +4,7 @@ class Battle:
     def __init__(self):
         self.name = ""
         self.date_range = []
-        self.location = ""
+        self.locations = []
         self.coord = []
         self.belligerents = []
         self.leaders = []
@@ -14,7 +14,7 @@ class Battle:
     def print_battle(self):
         txt = """Name: {n}
         Date Range: {dr}
-        Location: {loc}
+        Location: {locs}
         Coords: {coord}
         Belligerents: {bel}
         Leaders: {lead}
@@ -23,7 +23,7 @@ class Battle:
 
         txt = txt.format(n = self.name,
         dr = self.date_range,
-        loc = self.location,
+        locs = self.locations,
         coord = self.coord,
         bel = self.belligerents,
         lead = self.leaders,
@@ -40,7 +40,7 @@ class Battle:
 
         # Create list for information, based on class attributes.
         info_list = [self.date_range,
-                     self.location,
+                     self.locations,
                      self.coord,
                      self.belligerents,
                      self.leaders,

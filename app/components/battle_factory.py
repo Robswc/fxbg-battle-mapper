@@ -33,7 +33,7 @@ class BattleFactory:
         b = Battle()
         b.name = json_data.get('name')
         b.date_range = json_data.get('dateRange')
-        b.location = json_data.get('loc')
+        b.locations = json_data.get('locs')
         b.coord = json_data.get('coord')
         b.belligerents = json_data.get('belligerents')
         b.leaders = json_data.get('leaders')

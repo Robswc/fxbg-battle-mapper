@@ -14,7 +14,7 @@ class Battle:
     def print_battle(self):
         txt = """Name: {n}
         Date Range: {dr}
-        Location: {locs}
+        Locations: {locs}
         Coords: {coord}
         Belligerents: {bel}
         Leaders: {lead}

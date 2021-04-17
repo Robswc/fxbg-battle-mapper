@@ -34,11 +34,11 @@ class Scraper:
 
         soup = BeautifulSoup(html_doc, "html.parser")
 
-        # seperate info table
-        main_table = soup.find("table", class_="infobox vevent")
-
         # create battle object
         b = Battle()
+
+        # seperate info table
+        main_table = soup.find("table", class_="infobox vevent")
 
         # name
         first_header = main_table.find("th") # find first table header, contains battle name
@@ -58,9 +58,25 @@ class Scraper:
         locs = loc_div.find_all("a")
         for loc in locs:
             b.locations.append(loc.string)
+        
+        # belligerents
+        main_table_rows = main_table.find_all("tr")
+        for i, row in enumerate(main_table_rows): # loop through rows - side note, im a bit upset i didn't know i could use enumerate() to get the index along with the item when in a for loop like this. this seems very useful
+            th = row.find("th") # get header
+            if th is not None: # check if header exists
+                if th.string == "Belligerents":
+                    bellig = main_table_rows[i + 1]
+
+                    a_tags = bellig.find_all("a") # find all a tags and add their text to belligerents
+                    for a in a_tags:
+                        if a.string is not None:
+                            b.belligerents.append(a.string)
+
+                        
+                        
 
 
-        # print()
+        # print
         b.print_battle()
 
 

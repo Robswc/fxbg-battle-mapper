@@ -94,6 +94,17 @@ class Scraper:
                     stren_ps = stren.find_all("p")
                     for p in stren_ps:
                         b.strength.append(p.contents[0])
+        
+        # casualties
+        for i, row in  enumerate(main_table_rows):
+            th = row.find("th")
+            if th is not None:
+                if th.string == "Casualties and losses":
+                    cas = main_table_rows[i + 1]
+
+                    cas_bolds = cas.find_all("b")
+                    for bold in cas_bolds:
+                        b.casualties.append(bold.string)
 
 
         # print

@@ -77,12 +77,23 @@ class Scraper:
             th = row.find("th")
             if th is not None:
                 if th.string == "Commanders and leaders":
-                    bellig = main_table_rows[i + 1]
+                    lead = main_table_rows[i + 1]
 
-                    a_tags = bellig.find_all("a")
+                    a_tags = lead.find_all("a")
                     for a in a_tags:
                         if a.string is not None:
                             b.leaders.append(a.string)
+        
+        # strength
+        for i, row in enumerate(main_table_rows):
+            th = row.find("th")
+            if th is not None:
+                if th.string == "Strength":
+                    stren = main_table_rows[i + 1]
+
+                    stren_ps = stren.find_all("p")
+                    for p in stren_ps:
+                        b.strength.append(p.contents[0])
 
 
         # print

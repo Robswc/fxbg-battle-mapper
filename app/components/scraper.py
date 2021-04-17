@@ -71,9 +71,18 @@ class Scraper:
                     for a in a_tags:
                         if a.string is not None:
                             b.belligerents.append(a.string)
+        
+        # leaders
+        for i, row in enumerate(main_table_rows):
+            th = row.find("th")
+            if th is not None:
+                if th.string == "Commanders and leaders":
+                    bellig = main_table_rows[i + 1]
 
-                        
-                        
+                    a_tags = bellig.find_all("a")
+                    for a in a_tags:
+                        if a.string is not None:
+                            b.leaders.append(a.string)
 
 
         # print

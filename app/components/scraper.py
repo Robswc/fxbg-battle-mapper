@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from battle import Battle
+from geopy.geocoders import Nominatim
 
 class Scraper:
     def __init__(self):
@@ -35,16 +36,16 @@ class Scraper:
         self.battle_urls.remove("https://en.wikipedia.org/wiki/Battle_of_Fairfax_Court_House_(June_1863)")
 
     def get_battles(self):
-        # get html from wiki page
+        # get battle urls
         self.get_battle_urls()
         for url in self.battle_urls:
-            print(url)
+            print(url, end=" ")
 
-            r = requests.get(url)
+            r = requests.get(url) # get html
             print("done")
             html_doc = r.text
 
-            soup = BeautifulSoup(html_doc, "html.parser")
+            soup = BeautifulSoup(html_doc, "html.parser") # create bs
 
             # create battle object
             b = Battle()
@@ -127,8 +128,25 @@ class Scraper:
                             for td in tds:
                                 b.casualties.append(td.contents[0])
 
-
             self.battles.append(b)
+        
+        self.get_lat_long()
+    
+    def get_lat_long(self):
+        geolocator = Nominatim(user_agent="battle_mapper")
+
+        for b in self.battles:
+            loc_string = ""
+            if "Virginia" in b.locations[0]: # check if location has virgina in it already, if not add it
+                loc_string = b.locations[0]
+            else:
+                loc_string = b.locations[0] + ", Virginia"
+            
+            print(loc_string, end=" - ")
+            location = geolocator.geocode(loc_string)
+            b.coord.append(location.latitude)
+            b.coord.append(location.longitude)
+            print((location.latitude, location.longitude))
 
 
 
@@ -136,5 +154,3 @@ class Scraper:
 # test code
 scraper = Scraper()
 scraper.get_battles()
-for b in scraper.battles:
-    b.print_battle()

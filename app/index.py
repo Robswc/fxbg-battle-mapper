@@ -10,8 +10,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import json
-import requests
-from bs4 import BeautifulSoup
 
 # Import Controls
 from components import controls

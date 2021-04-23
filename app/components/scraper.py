@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from battle import Battle
+from components.battle import Battle
 from geopy.geocoders import Nominatim
 
 class Scraper:
@@ -149,8 +149,12 @@ class Scraper:
             print((location.latitude, location.longitude))
 
 
+def main():
+    print("not right")
 
+if __name__ == "__main__":
+    main()
 
 # test code
-scraper = Scraper()
-scraper.get_battles()
+# scraper = Scraper()
+# scraper.get_battles()

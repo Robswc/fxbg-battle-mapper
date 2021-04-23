@@ -32,19 +32,30 @@ bf = BattleFactory()
 bf.add_battle(bf.create_battle(load_sample_json()))
 # Creates header, description, and renders map html.
 
+
 # These lists chould probably start empty and have locations added from the web scraper but
 # Richmond is here as a placeholder
-latList = [37.5407]
-longList = [-77.4360]
-textList = ['Richmond']
+latList = []
+longList = []
+textList = []
 
-mapbox_figure = go.Figure(go.Scattermapbox(lat=latList, lon=longList, text=textList,
-    marker=go.scattermapbox.Marker(size=9)))
+# scrape battles and fill in marker data
+s = Scraper()
+s.get_battles()
+
+for b in s.battles:
+    latList.append(str(b.coord[0]))
+    longList.append(str(b.coord[1]))
+    textList.append(str(b.name))
+
+print("got here")
+mapbox_figure = go.Figure(go.Scattermapbox(lat=latList, lon=longList, text=textList, mode='markers', marker=go.scattermapbox.Marker(size=9)))
 mapbox_figure.update_layout(mapbox_style='carto-darkmatter')
 mapbox_figure.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 mapbox_figure.update_layout(height=720)
 mapbox_figure.update_layout(mapbox=dict(center=dict(lat=37.4316, lon=-78.6569), zoom=6))
 
+print("got here 2")
 app.layout = html.Div(children=[
     dcc.Loading(
         fullscreen=False,
@@ -64,7 +75,7 @@ app.layout = html.Div(children=[
                             html.Div(children=[
                                 controls.help_section,
                                 # Battle info render
-                                html.Div(bf.battle_list[0].render()),
+                                html.Div(s.battles[0].render()),
                                 # Footer
                                 controls.footer
                             ], className='card', style={'height': '100%'})

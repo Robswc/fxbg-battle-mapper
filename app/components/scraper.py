@@ -36,6 +36,9 @@ class Scraper:
         self.battle_urls.remove("https://en.wikipedia.org/wiki/Battle_of_Fairfax_Court_House_(June_1863)")
 
     def get_battles(self):
+        self.battles = []
+        self.battle_urls = []
+
         # get battle urls
         self.get_battle_urls()
         for url in self.battle_urls:

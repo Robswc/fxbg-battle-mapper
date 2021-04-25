@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Run this app with `python app.py` and
+# Run this app with `python index.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
 import dash
@@ -21,8 +21,6 @@ from app import app
 from components.battle import Battle
 from components.scraper import Scraper
 
-# Creates header, description, and renders map html.
-
 
 # These lists chould probably start empty and have locations added from the web scraper but
 # Richmond is here as a placeholder
@@ -41,6 +39,7 @@ for i, b in enumerate(s.battles):
     textList.append(str(b.name))
     battleIndex.append(i)
 
+# Creates header, description, and renders map html.
 mapbox_figure = go.Figure(go.Scattermapbox(lat=latList, lon=longList, text=textList, mode='markers',
     marker=go.scattermapbox.Marker(size=9), customdata=battleIndex))
 mapbox_figure.update_layout(mapbox_style='carto-darkmatter')
@@ -79,6 +78,7 @@ app.layout = html.Div(children=[
         ])
 ])
 
+# update html to show battle info
 @app.callback(
     Output("battle-output", "children"),
     Input("battle-map", "clickData"))
@@ -89,4 +89,7 @@ def show_battle_info(clickData):
         return html.Div()
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
+
+# debug=True causes scraper code to run twice before the app loads, just the way the debugger works
+# turned it off to waste time

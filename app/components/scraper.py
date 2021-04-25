@@ -150,9 +150,9 @@ class Scraper:
             
             print(loc_string, end=" - ")
             location = geolocator.geocode(loc_string)
-            lat = location.latitude + random.uniform(-.5, .5)
+            lat = location.latitude + random.uniform(-.3, .3)
             b.coord.append(lat)
-            lon = location.longitude + random.uniform(-.5, .5)
+            lon = location.longitude + random.uniform(-.3, .3)
             b.coord.append(lon)
             print((lat, lon))
 

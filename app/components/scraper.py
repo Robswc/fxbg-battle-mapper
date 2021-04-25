@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from components.battle import Battle
 from geopy.geocoders import Nominatim
+import random
 
 class Scraper:
     def __init__(self):
@@ -57,16 +58,18 @@ class Scraper:
             main_table = soup.find("table", class_="infobox vevent")
             main_table_rows = main_table.find_all("tr")
 
+            b.wikilink = url
+
             # name
             first_header = main_table.find("th") # find first table header, contains battle name
-            b.name = first_header.string
+            b.name = first_header.text
 
             # get table and rows containing date/locations/result
             sub_table = main_table.find("table")
             sub_table_rows = sub_table.find_all("tr")
 
             # date - first row of sub table
-            date = sub_table_rows[0].find("td").string
+            date = sub_table_rows[0].find("td").text
             b.date_range = date
 
             # locations - second row of sub table
@@ -147,9 +150,11 @@ class Scraper:
             
             print(loc_string, end=" - ")
             location = geolocator.geocode(loc_string)
-            b.coord.append(location.latitude)
-            b.coord.append(location.longitude)
-            print((location.latitude, location.longitude))
+            lat = location.latitude + random.uniform(-.5, .5)
+            b.coord.append(lat)
+            lon = location.longitude + random.uniform(-.5, .5)
+            b.coord.append(lon)
+            print((lat, lon))
 
 
 def main():

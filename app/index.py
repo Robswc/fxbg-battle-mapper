@@ -83,7 +83,10 @@ app.layout = html.Div(children=[
     Output("battle-output", "children"),
     Input("battle-map", "clickData"))
 def show_battle_info(clickData):
-    return s.battles[clickData["points"][0]["customdata"]].render()
+    if clickData is not None:
+        return s.battles[clickData["points"][0]["customdata"]].render()
+    else:
+        return html.Div()
 
 if __name__ == '__main__':
     app.run_server(debug=True)

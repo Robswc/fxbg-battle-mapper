@@ -10,6 +10,7 @@ class Battle:
         self.leaders = []
         self.strength = []
         self.casualties = []
+        self.wikilink =  ""
     
     def print_battle(self):
         txt = """Name: {n}
@@ -45,7 +46,8 @@ class Battle:
                      self.belligerents,
                      self.leaders,
                      self.strength,
-                     self.casualties]
+                     self.casualties,
+                     self.wikilink]
 
         info_list_html = []
         for item in info_list:

@@ -19,18 +19,8 @@ from components import controls
 from app import app
 
 from components.battle import Battle
-from components.battle_factory import BattleFactory
 from components.scraper import Scraper
 
-
-# Function that loads sample json
-def load_sample_json():
-    with open('components/sample_battle.json') as j:
-        return json.load(j)
-
-
-bf = BattleFactory()
-bf.add_battle(bf.create_battle(load_sample_json()))
 # Creates header, description, and renders map html.
 
 

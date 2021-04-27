@@ -1,8 +1,17 @@
 import requests
+import re
 from bs4 import BeautifulSoup
 from components.battle import Battle
 from geopy.geocoders import Nominatim
 import random
+
+def convert_coord(coord):
+    r = re.split('[°′″]', coord)
+    if len(r) == 3:
+        r.insert(2, '00')
+    deg, minutes, seconds, direction = r
+    return (float(deg) + float(minutes) / 60 + float(seconds) / (60 * 60)) * (-1 if direction in ['W', 'S'] else 1)
+
 
 class Scraper:
     def __init__(self):
@@ -27,7 +36,7 @@ class Scraper:
             full_url = url_p1 + url_p2
 
             self.battle_urls.append(full_url)
-        
+
         # remove anomoly links
         self.battle_urls.remove("https://en.wikipedia.org/wiki/List_of_American_Civil_War_battles_in_Northern_Virginia")
         self.battle_urls.remove("https://en.wikipedia.org/wiki/Manassas_campaign")
@@ -42,14 +51,14 @@ class Scraper:
 
         # get battle urls
         self.get_battle_urls()
-        for url in self.battle_urls:
+        for idx, url in enumerate(self.battle_urls):
             print(url, end=" ")
 
-            r = requests.get(url) # get html
+            r = requests.get(url)  # get html
             print("done")
             html_doc = r.text
 
-            soup = BeautifulSoup(html_doc, "html.parser") # create bs
+            soup = BeautifulSoup(html_doc, "html.parser")  # create bs
 
             # create battle object
             b = Battle()
@@ -61,7 +70,7 @@ class Scraper:
             b.wikilink = url
 
             # name
-            first_header = main_table.find("th") # find first table header, contains battle name
+            first_header = main_table.find("th")  # find first table header, contains battle name
             b.name = first_header.text
 
             # get table and rows containing date/locations/result
@@ -78,91 +87,138 @@ class Scraper:
             locs = loc_div.find_all("a")
             for loc in locs:
                 b.locations.append(loc.string)
-            
-            # belligerents
-            for i, row in enumerate(main_table_rows): # loop through rows - side note, im a bit upset i didn't know i could use enumerate() to get the index along with the item when in a for loop like this. this seems very useful
-                th = row.find("th") # get header
-                if th is not None: # check if header exists
-                    if th.string == "Belligerents" or th.string == "Units involved":
-                        bellig = main_table_rows[i + 1]
 
-                        a_tags = bellig.find_all("a") # find all a tags and add their text to belligerents
-                        for a in a_tags:
-                            if a.string is not None:
-                                b.belligerents.append(a.string)
-            
+            # coords
+            lat = soup.find_all('span', class_='latitude')
+            lng = soup.find_all('span', class_='longitude')
+            if lat and lng:
+                lat = lat[0].string
+                lng = lng[0].string
+                lat = convert_coord(lat)
+                lng = convert_coord(lng)
+                b.coord = [lat, lng]
+
+            # result
+            try:
+                b.result = sub_table_rows[2].find("td").text
+            except:
+                b.result = 'Unknown'
+
+            # belligerents
+            for i, row in enumerate(
+                    main_table_rows):  # loop through rows - side note, im a bit upset i didn't know i could use enumerate() to get the index along with the item when in a for loop like this. this seems very useful
+                th = row.find("th")  # get header
+                if th is not None:  # check if header exists
+                    if th.string == "Belligerents":
+                        for idx, j in enumerate(main_table_rows[i + 1].find_all('td')):
+                            try:
+                                a = [l.string for l in j.find_all('a')]
+                            except:
+                                a = [l.string for l in j.find_all('p')]
+                            if None in a:
+                                a.remove(None)
+                            try:
+                                icon_link = j.find('img')['src']
+                            except:
+                                icon_link = ''
+                            try:
+                                b.belligerents.update({idx: {'name': ' '.join(a), 'icon': icon_link}})
+                            except:
+                                b.belligerents.update({idx: {'name': a[0], 'icon': icon_link}})
+
             # leaders
             for i, row in enumerate(main_table_rows):
                 th = row.find("th")
                 if th is not None:
                     if th.string == "Commanders and leaders":
-                        lead = main_table_rows[i + 1]
+                        for idx, j in enumerate(main_table_rows[i + 1].find_all('td')):
+                            a = [l.string for l in j.find_all('a')]
+                            a = list(filter(None, a))
+                            if '†' in a:
+                                a.remove('†')
+                            if '' in a:
+                                a.remove('')
+                            b.leaders.update({idx: {'name': a}})
 
-                        a_tags = lead.find_all("a")
-                        for a in a_tags:
-                            if a.string is not None:
-                                b.leaders.append(a.string)
-            
             # strength
             for i, row in enumerate(main_table_rows):
                 th = row.find("th")
                 if th is not None:
                     if th.string == "Strength":
-                        stren = main_table_rows[i + 1]
-                        if len(stren.contents[0].contents) > 2:
-                            stren_ps = stren.find_all("p")
-                            for p in stren_ps:
-                                b.strength.append(p.contents[0])
-                        else:
-                            tds = stren.find_all("td")
-                            for td in tds:
-                                b.strength.append(td.contents[0])
-            
+                        for idx, j in enumerate(main_table_rows[i + 1].find_all('td')):
+                            s = 'Unknown'
+                            num = 0
+                            try:
+                                if j.string is not None:
+                                    s = j.string
+                                else:
+                                    p = j.find_all('p')[0].getText()
+                                    s = p
+                                    num = re.findall(r'\b\d+\b', s.replace(',', ''))[0]
+                            except:
+                                pass
+
+                            s = re.sub("[\(\[].*?[\)\]]", "", s)
+                            s = s.strip()
+
+
+
+
+
+                            b.strength.update({idx: {'strength': {'text': s, 'number': num}}})
+
             # casualties
-            for i, row in  enumerate(main_table_rows):
+            for i, row in enumerate(main_table_rows):
                 th = row.find("th")
                 if th is not None:
                     if th.string == "Casualties and losses":
-                        cas = main_table_rows[i + 1]
-
-                        if len(cas.contents[0].contents) > 2:
-                            cas_bolds = cas.find_all("b")
-                            for bold in cas_bolds:
-                                b.casualties.append(bold.string)
-                        else:
-                            tds = cas.find_all("td")
-                            for td in tds:
-                                b.casualties.append(td.contents[0])
+                        for idx, j in enumerate(main_table_rows[i + 1].find_all('td')):
+                            try:
+                                a = [j.string.strip()]
+                            except:
+                                a = ['Unknown']
+                            if None in a:
+                                a.remove(None)
+                            b.casualties.update({idx: {'casualties': ' '.join(a)}})
 
             self.battles.append(b)
-        
+            if 'fredericksburg' in url:
+                break
+
         self.get_lat_long()
-    
+
+        return self.battles
+
     def get_lat_long(self):
         geolocator = Nominatim(user_agent="battle_mapper")
 
         for b in self.battles:
-            loc_string = ""
-            if "Virginia" in b.locations[0]: # check if location has virgina in it already, if not add it
-                loc_string = b.locations[0]
-            else:
-                loc_string = b.locations[0] + ", Virginia"
-            
-            print(loc_string, end=" - ")
-            location = geolocator.geocode(loc_string)
-            lat = location.latitude + random.uniform(-.3, .3)
-            b.coord.append(lat)
-            lon = location.longitude + random.uniform(-.3, .3)
-            b.coord.append(lon)
-            print((lat, lon))
+            if not b.coord:
+                loc_string = ""
+                if "Virginia" in b.locations[0]:  # check if location has virgina in it already, if not add it
+                    loc_string = b.locations[0]
+                else:
+                    loc_string = b.locations[0] + ", Virginia"
+
+                print(loc_string, end=" - ")
+                location = geolocator.geocode(loc_string)
+                lat = location.latitude + random.uniform(-.3, .3)
+                b.coord.append(lat)
+                lon = location.longitude + random.uniform(-.3, .3)
+                b.coord.append(lon)
+                print((lat, lon))
+
+#
+# def main():
+#     print("not right")
 
 
-def main():
-    print("not right")
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 # test code
 # scraper = Scraper()
 # scraper.get_battles()
+#
+# for b in scraper.battles:
+#     b.print_battle()

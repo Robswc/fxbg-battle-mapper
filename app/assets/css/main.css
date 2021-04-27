@@ -1,6 +1,17 @@
 .battle-header {
-    color: red;
-    padding: 1em;
+    color: black;
+    padding: 1rem;
+    text-transform: uppercase;
+}
+
+.battle-header div {
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.battle-header span {
+    font-size: medium;
+    font-weight: bold;
 }
 
 .main-container {
@@ -11,7 +22,7 @@
 }
 
 .battle-container {
-
+    background-color: whitesmoke;
     font-family: "Arial";
 }
 
@@ -34,6 +45,36 @@
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera < 12.1 */
             animation: fadein 1s;
+}
+
+.flex-row {
+    width: 100%;
+    display: flex;
+    padding: 0.5rem 1rem;
+}
+
+.flex-item {
+    flex-grow: 1;
+    border: red solid 1px;
+}
+
+.flex-item-key {
+    width: 33%;
+    font-weight: bold;
+}
+
+.flex-item-value {
+    width: 66%;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flag-icon {
+    border: black solid 1px;
+    margin-right: 0.25em;
 }
 
 @keyframes fadein {

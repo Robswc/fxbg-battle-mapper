@@ -11,6 +11,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import json
+import math
 
 # Import Controls
 from components import controls
@@ -21,27 +22,54 @@ from app import app
 from components.battle import Battle
 from components.scraper import Scraper
 
-
 # These lists chould probably start empty and have locations added from the web scraper but
 # Richmond is here as a placeholder
 latList = []
 longList = []
 textList = []
 battleIndex = []
+color_list = []
+size_list = []
 
 # scrape battles and fill in marker data
-s = Scraper()
-s.get_battles()
+# s = Scraper()
+# s.get_battles()
 
-for i, b in enumerate(s.battles):
+# load data from database
+from components import db_interface
+
+battles = db_interface.get_battles_from_db()
+print(battles)
+for i, b in enumerate(battles):
     latList.append(str(b.coord[0]))
     longList.append(str(b.coord[1]))
     textList.append(str(b.name))
+    color = 'gray'
+    if 'union' or 'united' in str(b.result).lower():
+        color = 'blue'
+    if 'confederate' in str(b.result).lower():
+        color = 'red'
+    if 'inconclusive' in str(b.result).lower():
+        color = 'gray'
+    color_list.append(color)
+
+    print('ssssss', b.strength)
+    size = 0
+    try:
+        size += int(b.strength.get('0').get('strength').get('number'))
+        size += int(b.strength.get('1').get('strength').get('number'))
+        size_list.append(10 * math.log(size, 10))
+        print(size)
+    except:
+        size_list.append(10)
+
     battleIndex.append(i)
 
 # Creates header, description, and renders map html.
-mapbox_figure = go.Figure(go.Scattermapbox(lat=latList, lon=longList, text=textList, mode='markers',
-    marker=go.scattermapbox.Marker(size=9), customdata=battleIndex))
+mapbox_figure = go.Figure()
+mapbox_figure.add_trace(go.Scattermapbox(lat=latList, lon=longList, text=textList, mode='markers',
+                                         marker=go.scattermapbox.Marker(size=size_list, color=color_list),
+                                         customdata=battleIndex))
 mapbox_figure.update_layout(mapbox_style='carto-darkmatter')
 mapbox_figure.update_layout(clickmode="event+select")
 mapbox_figure.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
@@ -78,18 +106,23 @@ app.layout = html.Div(children=[
         ])
 ])
 
+for b in battles:
+    print(b.print_battle())
+
 # update html to show battle info
 @app.callback(
     Output("battle-output", "children"),
     Input("battle-map", "clickData"))
 def show_battle_info(clickData):
     if clickData is not None:
-        return s.battles[clickData["points"][0]["customdata"]].render()
+        print(battles[clickData["points"][0]["customdata"]].print_battle())
+        return battles[clickData["points"][0]["customdata"]].render()
     else:
         return html.Div()
 
+
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
 
 # debug=True causes scraper code to run twice before the app loads, just the way the debugger works
 # turned it off to waste time

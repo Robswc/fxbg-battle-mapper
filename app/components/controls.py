@@ -27,7 +27,7 @@ help_section = html.Div(
         html.H1('FXBG-BATTLE-MAPPER'),
         html.P('Explore historical battles that took place in Virginia!'),
         html.P('Click the markers on the map to learn more about each battle.'),
-        html.P('Click get started when ready. Filler text etc.'),
+        html.P('Click get started when ready. You can also check out the project on Github!'),
         html.Button('GET STARTED!', id='get-started')
     ],
     className='help-container', id='help-container')

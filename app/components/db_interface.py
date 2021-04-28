@@ -5,7 +5,7 @@ import json
 
 
 def add_battles_to_db(battle_list):
-    conn = sqlite3.connect('../data/battles.db')
+    conn = sqlite3.connect('data/battles.db')
 
     c = conn.cursor()
     c.execute('''
@@ -70,8 +70,8 @@ def get_battles_from_db():
     return battle_list
 
 
-
-
-# s = Scraper()
-# add_battles_to_db(s.get_battles())
-# get_battles_from_db()
+def update_db(update):
+    if update:
+        s = Scraper()
+        add_battles_to_db(s.get_battles())
+    # get_battles_from_db()

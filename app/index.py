@@ -39,7 +39,7 @@ size_list = []
 from components import db_interface
 
 battles = db_interface.get_battles_from_db()
-print(battles)
+# print(battles)
 for i, b in enumerate(battles):
     latList.append(str(b.coord[0]))
     longList.append(str(b.coord[1]))
@@ -53,7 +53,7 @@ for i, b in enumerate(battles):
         color = 'gray'
     color_list.append(color)
 
-    print('ssssss', b.strength)
+    # print('ssssss', b.strength)
     size = 0
     try:
         size += int(b.strength.get('0').get('strength').get('number'))
@@ -106,8 +106,8 @@ app.layout = html.Div(children=[
         ])
 ])
 
-for b in battles:
-    print(b.print_battle())
+# for b in battles:
+#     print(b.print_battle())
 
 # update html to show battle info
 @app.callback(
@@ -122,6 +122,7 @@ def show_battle_info(clickData):
 
 
 if __name__ == '__main__':
+    db_interface.update_db(False) # make false to not run scraper
     app.run_server(debug=True)
 
 # debug=True causes scraper code to run twice before the app loads, just the way the debugger works

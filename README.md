@@ -25,6 +25,10 @@ This project uses dash-plotly for the front end.  This means in order to run, yo
 # Hosted
 `https:\\battle-mapper.herokuapp.com`
 
+Pushing changes can be done by pushing to the heroku remote main branch after adding/commiting them locally.
+For example pushing from the wip branch:
+`git push heroku wip:main`
+
 # Authors
 
 Robert Carroll  

@@ -76,6 +76,8 @@ mapbox_figure.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 mapbox_figure.update_layout(height=720)
 mapbox_figure.update_layout(mapbox=dict(center=dict(lat=37.4316, lon=-78.6569), zoom=6))
 
+server = app.server
+
 app.layout = html.Div(children=[
     dcc.Loading(
         fullscreen=False,
@@ -123,7 +125,7 @@ def show_battle_info(clickData):
 
 if __name__ == '__main__':
     db_interface.update_db(False) # make false to not run scraper
-    app.run_server(debug=True)
+    app.run_server(debug=False)
 
 # debug=True causes scraper code to run twice before the app loads, just the way the debugger works
 # turned it off to waste time

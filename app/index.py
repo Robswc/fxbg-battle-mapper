@@ -59,7 +59,7 @@ for i, b in enumerate(battles):
         size += int(b.strength.get('0').get('strength').get('number'))
         size += int(b.strength.get('1').get('strength').get('number'))
         size_list.append(10 * math.log(size, 10))
-        print(size)
+        # print(size)
     except:
         size_list.append(10)
 
@@ -117,7 +117,8 @@ app.layout = html.Div(children=[
     Input("battle-map", "clickData"))
 def show_battle_info(clickData):
     if clickData is not None:
-        print(battles[clickData["points"][0]["customdata"]].print_battle())
+        # print(battles[clickData["points"][0]["customdata"]].print_battle())
+        print(battles[clickData["points"][0]["customdata"]].wikilink) # returns None
         return battles[clickData["points"][0]["customdata"]].render()
     else:
         return html.Div()

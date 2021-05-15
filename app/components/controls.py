@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output
 from app import app
 import base64
 
-logo = base64.b64encode(open('app/assets/img/brand_logo.png', 'rb').read())
+logo = base64.b64encode(open('assets/img/brand_logo.png', 'rb').read())
 
 footer = html.Footer(children=[
     html.Div(children=[

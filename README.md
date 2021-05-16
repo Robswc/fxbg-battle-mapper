@@ -6,7 +6,7 @@
 An open source project that maps various battles onto an interactive map, detailed with information.
 Written in python, using dash and beautiful soup.
 
-# How to use
+# How to use (locally)
 
 *currently a work in progress*
 
@@ -21,6 +21,14 @@ This project uses dash-plotly for the front end.  This means in order to run, yo
 `python app.py`
 
 - This will create a webpage which will then open in your default browser.
+
+# Hosted
+`https:\\battle-mapper.herokuapp.com`
+You may have to wait a bit for it to start up if it hasnt been visted in a bit.
+
+Pushing changes can be done by pushing to the heroku remote main branch after adding/commiting them locally.
+For example pushing from the wip branch:
+`git push heroku wip:main`
 
 # Authors
 

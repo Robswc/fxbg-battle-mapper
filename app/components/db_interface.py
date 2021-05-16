@@ -5,7 +5,7 @@ import json
 
 
 def add_battles_to_db(battle_list):
-    conn = sqlite3.connect('data/battles.db')
+    conn = sqlite3.connect('app/data/battles.db')
 
     c = conn.cursor()
     c.execute('''
@@ -49,7 +49,7 @@ def add_battles_to_db(battle_list):
 
 
 def get_battles_from_db():
-    conn = sqlite3.connect('data/battles.db')
+    conn = sqlite3.connect('app/data/battles.db')
     c = conn.cursor()
     c.execute('SELECT * FROM battle')
     battle_list = []

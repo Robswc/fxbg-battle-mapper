@@ -23,6 +23,8 @@ def add_battles_to_db(battle_list):
     for b in battle_list:
         idx += 1
 
+        # print(type(b.wikilink)) returns type str
+
         data = {
             'name': b.name,
             'dateRange': b.date_range,
@@ -33,8 +35,10 @@ def add_battles_to_db(battle_list):
             'leaders': b.leaders,
             'strength': b.strength,
             'casualties': b.casualties,
-            'link': b.wikilink
+            'wikilink': b.wikilink
         }
+
+        # print(type(data.get('link'))) return type str
 
         params = (idx, str(b.name), json.dumps(data))
 
@@ -62,11 +66,12 @@ def get_battles_from_db():
         b.leaders = data.get('leaders')
         b.strength = data.get('strength')
         b.casualties = data.get('casualties')
-        b.wikilink = data.get('wikilink')
+        b.wikilink = data.get('wikilink') # NoneType when it gets here
         battle_list.append(b)
 
     for b in battle_list:
         print(b.wikilink)
+        pass
     return battle_list
 
 

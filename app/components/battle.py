@@ -98,7 +98,7 @@ class Battle:
             ),
             'Link': html.Details(
                 children=[
-                    html.A(info.get('name'), href=str(info.get('link')), className='flex-col'),
+                    html.A(info.get('name'), href=str(info.get('wikilink')), className='flex-col'),
                 ]
             )
         }
@@ -120,7 +120,7 @@ class Battle:
             'leaders': self.leaders,
             'strength': self.strength,
             'casualties': self.casualties,
-            'link': self.wikilink,
+            'wikilink': self.wikilink,
         }
 
         details = self.generate_details(info)
